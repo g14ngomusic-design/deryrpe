@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R&R Store Admin</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<h1>R&R Store Admin</h1>
+
+<p>Bienvenido, Administrador</p>
+
+<div class="menu">
+
+<button onclick="location.href='agregar.html'">
+➕ Agregar Producto
+</button>
+
+<button onclick="location.href='productos.html'">
+📦 Ver Productos
+</button>
+
+<button>
+📊 Estadísticas
+</button>
+
+<button onclick="cerrarSesion()">
+🚪 Cerrar Sesión
+</button>
+
+</div>
+
+</div>
+
+<script>
+function cerrarSesion(){
+    window.location.href="index.html";
+}
+</script>
+
+</body>
+</html>

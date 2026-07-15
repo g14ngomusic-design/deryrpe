@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>D' R&R | Productos</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+
+body{
+
+margin:0;
+
+background:#070707;
+
+font-family:Arial,sans-serif;
+
+color:white;
+
+padding:25px;
+
+}
+
+
+
+h1{
+
+text-align:center;
+
+color:#FFD166;
+
+font-size:35px;
+
+}
+
+
+
+.lista{
+
+max-width:1200px;
+
+margin:40px auto;
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+gap:30px;
+
+}
+
+
+
+.card{
+
+background:#151515;
+
+border:1px solid #333;
+
+border-radius:30px;
+
+padding:20px;
+
+box-shadow:0 20px 40px #000;
+
+}
+
+
+
+.card img{
+
+width:100%;
+
+height:260px;
+
+object-fit:cover;
+
+border-radius:25px;
+
+}
+
+
+
+.card h2{
+
+margin-top:20px;
+
+}
+
+
+
+.precio{
+
+font-size:24px;
+
+font-weight:bold;
+
+color:#FFD166;
+
+}
+
+
+
+.info{
+
+color:#ccc;
+
+line-height:1.7;
+
+}
+
+
+
+button{
+
+width:100%;
+
+padding:15px;
+
+margin-top:15px;
+
+border-radius:30px;
+
+border:none;
+
+background:#FF6B35;
+
+color:white;
+
+font-weight:bold;
+
+font-size:15px;
+
+}
+
+
+
+.vacio{
+
+text-align:center;
+
+color:#aaa;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>📦 Productos D' R&R</h1>
+
+
+<div class="lista" id="lista"></div>
+
+
+
+<script>
+
+
+let productos =
+
+JSON.parse(localStorage.getItem("productos")) || [];
+
+
+
+let lista=document.getElementById("lista");
+
+
+
+if(productos.length===0){
+
+
+lista.innerHTML=
+
+"<h2 class='vacio'>No hay productos agregados</h2>";
+
+
+}
+
+
+
+productos.forEach((producto,index)=>{
+
+
+lista.innerHTML += `
+
+
+<div class="card">
+
+
+<img src="${producto.imagen}" loading="lazy">
+
+
+
+<h2>${producto.nombre}</h2>
+
+
+
+<div class="precio">
+
+S/ ${producto.precio}
+
+</div>
+
+
+
+<div class="info">
+
+Marca: ${producto.marca}
+
+<br>
+
+Stock: ${producto.stock}
+
+<br><br>
+
+${producto.descripcion}
+
+</div>
+
+
+
+<button onclick="eliminar(${index})">
+
+🗑 Eliminar producto
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+
+
+function eliminar(index){
+
+
+if(confirm("¿Eliminar este producto?")){
+
+
+productos.splice(index,1);
+
+
+localStorage.setItem(
+
+"productos",
+
+JSON.stringify(productos)
+
+);
+
+
+location.reload();
+
+
+}
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

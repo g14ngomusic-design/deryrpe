@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R&R Store Admin</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="login-box">
+
+<img src="assets/images/logo.png" class="logo" alt="R&R Store">
+
+<h1>R&R Store Admin</h1>
+
+<p>Panel de Administración</p>
+
+<input type="email" id="email" placeholder="Correo electrónico">
+
+<input type="password" id="password" placeholder="Contraseña">
+
+<button id="loginBtn">Iniciar sesión</button>
+
+<p id="mensaje"></p>
+
+</div>
+
+<script src="firebase.js"></script>
+<script src="app.js"></script>
+
+  <script>
+const CLOUD_NAME = "vhhvfndm";
+const UPLOAD_PRESET = "RyRStore";
+
+async function subirImagen(archivo){
+
+  const datos = new FormData();
+  datos.append("file", archivo);
+  datos.append("upload_preset", UPLOAD_PRESET);
+
+  const respuesta = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+    {
+      method: "POST",
+      body: datos
+    }
+  );
+
+  const resultado = await respuesta.json();
+
+  console.log(resultado.secure_url);
+}
+</script>
+</body>
+</html>

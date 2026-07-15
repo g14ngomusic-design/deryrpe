@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>D' R&R | Agregar Producto</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+
+margin:0;
+
+min-height:100vh;
+
+background:#070707;
+
+font-family:Arial,sans-serif;
+
+color:white;
+
+padding:20px;
+
+}
+
+
+.contenedor{
+
+max-width:450px;
+
+margin:auto;
+
+background:#121212;
+
+border:1px solid #333;
+
+border-radius:30px;
+
+padding:30px;
+
+box-shadow:0 20px 50px #000;
+
+}
+
+
+.logo{
+
+text-align:center;
+
+}
+
+
+.logo img{
+
+width:200px;
+
+max-width:90%;
+
+}
+
+
+
+h1{
+
+text-align:center;
+
+color:#FFD166;
+
+}
+
+
+
+label{
+
+display:block;
+
+margin-top:15px;
+
+color:#ddd;
+
+}
+
+
+
+input,
+textarea{
+
+width:100%;
+
+margin-top:8px;
+
+padding:14px;
+
+border-radius:18px;
+
+border:none;
+
+background:#222;
+
+color:white;
+
+font-size:16px;
+
+}
+
+
+
+textarea{
+
+height:100px;
+
+resize:none;
+
+}
+
+
+
+#preview{
+
+display:none;
+
+width:180px;
+
+height:180px;
+
+object-fit:cover;
+
+border-radius:25px;
+
+margin:20px auto;
+
+}
+
+
+
+button{
+
+width:100%;
+
+padding:15px;
+
+margin-top:18px;
+
+border-radius:30px;
+
+border:none;
+
+background:#FF6B35;
+
+color:white;
+
+font-weight:bold;
+
+font-size:16px;
+
+}
+
+
+
+.secundario{
+
+background:#333;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+<div class="logo">
+
+<img src="logo.png">
+
+</div>
+
+
+<h1>Agregar Producto</h1>
+
+
+
+<label>Nombre del producto</label>
+
+<input id="nombre">
+
+
+
+<label>Marca</label>
+
+<input id="marca">
+
+
+
+<label>Precio</label>
+
+<input id="precio" type="number">
+
+
+
+<label>Stock</label>
+
+<input id="stock" type="number">
+
+
+
+<label>Descripción</label>
+
+<textarea id="descripcion"></textarea>
+
+
+
+<label>Foto del producto</label>
+
+<input id="imagen" type="file" accept="image/*">
+
+
+
+<img id="preview">
+
+
+
+<button onclick="guardarProducto()">
+
+Guardar Producto
+
+</button>
+
+
+
+<button class="secundario" onclick="location.href='productos.html'">
+
+Ver productos
+
+</button>
+
+
+
+</div>
+
+
+
+<script>
+
+
+const CLOUD_NAME="vhhvfndm";
+
+const UPLOAD_PRESET="RyRStore";
+
+
+let archivoImagen=null;
+
+
+
+document.getElementById("imagen").addEventListener("change",function(){
+
+
+archivoImagen=this.files[0];
+
+
+if(archivoImagen){
+
+
+let preview=document.getElementById("preview");
+
+
+preview.src=URL.createObjectURL(archivoImagen);
+
+
+preview.style.display="block";
+
+
+}
+
+
+});
+
+
+
+
+
+async function subirImagen(){
+
+
+let datos=new FormData();
+
+
+datos.append("file",archivoImagen);
+
+datos.append("upload_preset",UPLOAD_PRESET);
+
+
+
+let respuesta=await fetch(
+
+"https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/image/upload",
+
+{
+
+method:"POST",
+
+body:datos
+
+}
+
+);
+
+
+
+let resultado=await respuesta.json();
+
+
+return resultado.secure_url;
+
+
+}
+
+
+
+
+
+async function guardarProducto(){
+
+
+if(!archivoImagen){
+
+alert("Selecciona una imagen");
+
+return;
+
+}
+
+
+
+let urlImagen=await subirImagen();
+
+
+
+let productos=
+
+JSON.parse(localStorage.getItem("productos")) || [];
+
+
+
+productos.push({
+
+
+nombre:document.getElementById("nombre").value,
+
+marca:document.getElementById("marca").value,
+
+precio:document.getElementById("precio").value,
+
+stock:document.getElementById("stock").value,
+
+descripcion:document.getElementById("descripcion").value,
+
+imagen:urlImagen
+
+
+});
+
+
+
+localStorage.setItem(
+
+"productos",
+
+JSON.stringify(productos)
+
+);
+
+
+
+alert("Producto guardado correctamente");
+
+
+location.reload();
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
